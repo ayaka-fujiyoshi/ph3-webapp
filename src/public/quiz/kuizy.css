@@ -1,0 +1,321 @@
+/* ページ全体中央揃え */
+body {
+    margin: 0;
+    padding: 0;
+}
+ul {
+ padding: 0;
+}
+
+.title{
+    width: auto;
+    margin: auto;
+    margin-top: 90px;
+    margin-bottom: 15px;
+    max-width: 650px;
+    font-size: 19px;
+    line-height: 27px;
+    font-weight: 700;
+}
+
+.mainWrapper {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 650px;
+    /* padding-top: 60px; */
+}
+
+/* ヘッダーの見た目 */
+header {
+    /* display: flex; */
+    width: 100%;
+    letter-spacing: .04em;
+    background-color: #fff;
+    align-items: center;
+    position:fixed;
+    top: 0;
+    height: 50px;
+}
+
+.headerWrapper{
+    display: flex;
+    height: 40px;
+    align-items: center;
+    max-width: 650px;
+    /* width: 100%; */
+    margin: 0 auto;
+}
+.headerWrapper img{
+    position: relative;
+}
+
+/* header{
+    /* position: relative; 
+    left: inherit;
+    text-align: center;
+    align-items: center;
+} */
+
+header p {
+    text-align: center;
+    margin-left: 30px;
+    margin-right: auto;
+    /* color: #25ABD8; */
+    font-size: 26px;
+    font-family: "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "游ゴシック Medium", meiryo, sans-serif;
+}
+
+header a{
+    text-decoration: none;
+    color: #25ABD8;
+    font-weight: bold;
+    /* font-family: 'Hiragino Kaku Gothic ProN',-apple-system,BlinkMacSystemFont,'Hiragino Sans','游ゴシック Medium',meiryo,sans-serif; */
+    cursor: pointer;
+}
+
+
+header li {
+    margin: 0 10px 0 5px;
+    float: left;
+    /* align-items: center; */
+}
+
+/* クイズ・診断を作るのボタン */
+.headerQuizCreateButton{
+    display: block;
+    background-color: #f49000;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 25px;
+    letter-spacing: .04em;
+    width: auto;
+    /* text-align: center; */
+    justify-content: center;
+    display: table-cell; /* IE8から使用可能 */
+    padding: 0 5px 0 5px;
+    /* vertical-align: middle; */
+}
+
+/* 検索のボタン */
+.headerButtons .searchImg{
+    display: left;
+    top: 2px;
+}
+
+.headerSearchButton{
+    display: flex;
+    background-color: #031831;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 25px;
+    padding: 0 5px 0 5px;
+}
+
+.headerSearchButton img{
+    margin-top: 5px;
+    margin-right: 5px;
+    
+}
+
+/* サブメニュー */
+.menuWrapper{
+    display: block;
+    /* width: 100%; */
+    margin: 0 auto;
+    max-width: 650px;
+    align-items: center;
+    margin-top: 0;
+    position: absolute;
+    /* max-width: 650px; */
+    /* margin-top: 200px; */
+    top: 45px;
+    right: 0;
+    bottom: 0;
+    left: -160%;
+    height: 100vh;
+    z-index: 3;
+    background: rgba(156, 153, 153, 0.3);
+}
+.subMenu{
+    width: 40%;
+    height: 100vh;
+    max-width: 650px;
+    background-color: #fff;
+}
+.subMenu ul{
+    list-style: none;
+    margin: 0 auto;
+    height: 100%;
+    overflow-y: auto;
+}
+.subMenu ul li{
+    box-sizing: border-box;
+    margin: 0 15px;
+    display: block;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+.subMenu ul li a{
+    text-decoration: none;
+    color: #333;
+    font-size: .9rem;
+    line-height: 46px;
+}
+
+.subMenuFooter p{
+    line-height: 58px;
+    font-size: .7rem;
+    text-align: center;
+}
+/* .menu:hover .subMenu{
+    display: inline-block;
+} */
+#hamburger {
+    display: block;
+    position: absolute;
+    /* top: 0px;
+    left: 10px; */
+    width: 25px;
+    height: 22px;
+    cursor: pointer;
+    transition: 1s;
+  }
+  .inner_line {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 25px;
+    height: 3px;
+    background-color: #000000;
+    transition: 1s;
+    border-radius: 4px;
+  }
+  #line1 {
+    top: 0;
+  }
+  #line2 {
+    top: 10px;
+  }
+  #line3 {
+    bottom: 0px;
+  }
+  .in{
+    transform: translateX(160%);
+  }
+  
+
+/* 下２つは問題文の見た目 */
+h1 {
+    font-size: 17px;
+    line-height: 20px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+h1:after {
+    display: block;
+    margin-top: 10px;
+    width: 120px;
+    height: 2px;
+    background-color: #00ab36;
+    content: '';
+}
+
+/* 問題の選択肢ブロックの見た目 */
+.option{ 
+    margin: 8px;
+    padding-left: 14px; 
+    border:1px solid #ebebeb; 
+    width:600px; 
+    height: 50px; 
+    font-weight: bold; 
+    background-color: #ffffff; 
+    box-shadow: 0 1.5px 1.5px #e6e6e6; 
+    line-height: 50px;
+    list-style: none;/* リストの黒丸を消す */
+}
+
+.buttonOfOptionNumber{ 
+    margin: 8px;
+    padding-left: 14px; 
+    border:1px solid #ebebeb; 
+    width:600px; 
+    height: 50px; 
+    font-weight: bold; 
+    background-color: #ffffff; 
+    box-shadow: 0 1.5px 1.5px #e6e6e6; 
+    line-height: 50px;
+    list-style: none;/* リストの黒丸を消す */
+}
+
+
+/* リストの黒丸を消す */
+ul{
+    list-style: none;
+}
+
+/* 正解の時のブロックの見た目 */
+.answerBox{
+    margin: 6px;
+    padding-left: 14px; 
+    border:1px solid #287DFF; 
+    color:#ffffff;
+    width:600px; 
+    height: 48px; 
+    font-weight: bold; 
+    background-color: #287DFF; 
+    box-shadow: 0px 1.5px 1.5px #e6e6e6; 
+    line-height: 48px;   
+}
+/* 不正解の時のブロックの見た目 */
+.incorrectAnswerBox{
+    margin: 6px;
+    padding-left: 14px; 
+    border:1px solid #ff5128; 
+    color:#ffffff;
+    width:600px; 
+    height: 48px; 
+    font-weight: bold; 
+    background-color: #ff5128; 
+    box-shadow: 0px 1.5px 1.5px #e6e6e6; 
+    line-height: 48px;   
+}
+
+.firstIsInvisible{
+    display: none;
+    margin: 6px;
+    padding-left: 14px; 
+    border:1px solid #f5f5f5; 
+    width:600px; 
+    height: 95px; 
+    background-color: #f5f5f5; 
+    box-shadow: 0 1.5px 1.5px #e6e6e6; 
+    line-height: 48px;   
+    list-style: none;/* リストの黒丸を消す */
+}
+    
+.firstIsInvisible span{
+    font-weight: bold;
+    border-bottom: solid 4px #287dff;
+}
+
+.incorrectFirstIsInvisible{
+    display: none;
+    margin: 6px;
+    padding-left: 14px; 
+    border:1px solid #f5f5f5; 
+    width:600px; 
+    height: 95px; 
+    background-color: #f5f5f5; 
+    box-shadow: 0 1.5px 1.5px #e6e6e6; 
+    line-height: 48px;   
+    list-style: none;/* リストの黒丸を消す */
+}
+    
+.incorrectFirstIsInvisible span{
+    font-weight: bold;
+    border-bottom: solid 4px #ff5128;
+}
+
