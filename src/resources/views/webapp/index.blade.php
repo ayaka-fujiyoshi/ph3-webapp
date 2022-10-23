@@ -33,17 +33,23 @@
             <ul class="main__study__number">
               <li class="main__study__item first__item">
                 <div class="main__study__item__title">Today</div>
-                  <div class="main__study__item__number"></div>
+                @foreach($study_times_years as $study_times_year)
+                  <div class="main__study__item__number">{{$study_times_year->count_hour}}</div>
+                @endforeach
                 <div class="main__study__item__unit">hour</div>
               </li>
               <li class="main__study__item">
                 <div class="main__study__item__title">Month</div>
-                <div class="main__study__item__number"></div>
+                @foreach($study_times_months as $study_times_month)
+                  <div class="main__study__item__number">{{$study_times_month->count_hour}}</div>
+                @endforeach
                 <div class="main__study__item__unit">hour</div>
               </li>
               <li class="main__study__item last__item">
                 <div class="main__study__item__title">Total</div>
-                <div class="main__study__item__number"></div>
+                @foreach($study_times_days as $study_times_day)
+                  <div class="main__study__item__number">{{$study_times_day->count_hour}}</div>
+                @endforeach
                 <div class="main__study__item__unit">hour</div>
               </li>
             </ul>
