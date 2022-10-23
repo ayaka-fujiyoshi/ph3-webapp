@@ -1,52 +1,13 @@
-<?php
-// require_once('config.php');
-// require_once('functions.php');
-require_once('graphs.php');
-
-// 年別に集計
-$stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")')->fetch();
-foreach ($stmt as $results_year) {
-  if ($results_year == NULL) {
-    $results_year = 0;
-  }
-}
-
-// 月別に集計
-$stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y-%m") = DATE_FORMAT(now(), "%Y-%m")')->fetch();
-foreach ($stmt as $results_month) {
-  if ($results_month == NULL) {
-    $results_month = 0;
-  }
-}
-
-// 日別に集計
-$stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y-%m-%d") = DATE_FORMAT(now(), "%Y-%m-%d")')->fetch();  // NULL
-foreach ($stmt as $results_date) {
-  if ($results_date == NULL) {
-    $results_date = 0;
-  }
-}
-
-//POST形式データ受け取り
-$study_date_post = $_POST['study__date'];    //学習日
-$study_content_post = $_POST['study_content'];  //学習コンテンツ checkbox[]
-$study_language_post = $_POST['study_language'];//学習言語 checkbox[]
-$study_hour_post = $_POST['study__hour'];    //学習時間
-
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
-  <link rel="stylesheet" href="./normalize.css">
+  <link rel="stylesheet" href="{{asset('/css/normalize.css')}}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="webapp.css?v=<?php echo date('s'); ?>">
+  <link rel="stylesheet" href="{{asset('/css/webapp_error.css')}}">
+  <link rel="stylesheet" href="{{asset('/css/webapp.css')}}">
   <title>Posse app</title>
 </head>
 
@@ -72,17 +33,17 @@ $study_hour_post = $_POST['study__hour'];    //学習時間
             <ul class="main__study__number">
               <li class="main__study__item first__item">
                 <div class="main__study__item__title">Today</div>
-                  <div class="main__study__item__number"><?php echo $results_date; ?></div>
+                  <div class="main__study__item__number"></div>
                 <div class="main__study__item__unit">hour</div>
               </li>
               <li class="main__study__item">
                 <div class="main__study__item__title">Month</div>
-                <div class="main__study__item__number"><?php echo $results_month; ?></div>
+                <div class="main__study__item__number"></div>
                 <div class="main__study__item__unit">hour</div>
               </li>
               <li class="main__study__item last__item">
                 <div class="main__study__item__title">Total</div>
-                <div class="main__study__item__number"><?php echo $results_year; ?></div>
+                <div class="main__study__item__number"></div>
                 <div class="main__study__item__unit">hour</div>
               </li>
             </ul>
@@ -202,6 +163,7 @@ $study_hour_post = $_POST['study__hour'];    //学習時間
           <main id="modal__main">
             <div class="inner main__inner__ver__modal">
             <form action="" method="POST" name="contactForm" >
+              @csrf
               <!-- ↓のdivタグ範囲内でflexかける -->
              <div class="form_contents_wrapper">
                <!-- モーダル左側 -->
