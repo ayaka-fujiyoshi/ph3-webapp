@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Study_time;
 use App\Study_language;
 use App\Study_content;
+use Carbon\Carbon;
 
 class WebappController extends Controller
 {
@@ -14,13 +15,13 @@ class WebappController extends Controller
     {
         // return view('webapp.test');
         // return view('webapp.index');
-        $study_times_years = Study_time::where('study_date', '>=',  date('2022-01-01')) 
+        $study_times_years = Study_time::where('study_date', '>=',  Carbon::now()->startOfYear()->toDateString()) 
                                        ->selectRaw('COUNT(study_hour) as count_hour')
                                        ->get();
-        $study_times_months = Study_time::where('study_date', '>=',  date('2022-10-01')) 
+        $study_times_months = Study_time::where('study_date', '>=', Carbon::now()->startOfMonth()->toDateString()) 
                                        ->selectRaw('COUNT(study_hour) as count_hour')
                                        ->get();
-        $study_times_days = Study_time::where('study_date', '>=',  date('2022-10-24')) 
+        $study_times_days = Study_time::where('study_date', '>=', Carbon::today()) 
                                        ->selectRaw('COUNT(study_hour) as count_hour')
                                        ->get();
         $study_languages = Study_language::get();
