@@ -309,7 +309,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="webapp.js?v=<?php echo date('s'); ?>"></script>
+  <script src="{{asset('/js/webapp.js')}}"></script>
 </body>
 
 </html>
