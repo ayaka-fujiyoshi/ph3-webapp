@@ -92,3 +92,8 @@ Route::get('quiz/{id?}', 'QuizController@quiz')->name('quiz');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+//webappのルート設定
+Route::get('webapp', 'WebappController@index');//top
