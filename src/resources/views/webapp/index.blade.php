@@ -320,40 +320,86 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
   <?php
-    $colums = [];
-    // foreach($study_times_bars as $study_times_bar){
-    //     if ($study_times_bar[2] == ) {   //NULLなら０を
-    //     array_push($study_times_array, 0);    //empty()…変数が存在しない場合、または値が空かnullがセットされている場合にtrueを返す
-    //   }else{                                  //値があればそれをintに変換して$study_times_arrayに入れる
-    //     array_push($study_times_array, (int)$colum_graph_date[0][0]);
-    //   }
-    // }
-    // $piece_end_month[2]
-   
-    
-    //+=で合っているデータ入れる
-    
-    // $study_array_Json = json_encode($study_date_hour_array_data);  
+    $colum = [];
+    foreach($study_times_bars as $study_times_bar){
+      array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]); 
+    }
+    print_r($colum);
+    $study_array_Json = json_encode($colum);  
+    // print_r($study_array_Json);
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
   ?>
-  <p>{{ $piece_end_month[2] }}</p>
-  
-  @foreach($study_times_bars as $study_times_bar)
+  {{-- <p>{{ $piece_end_month[2] }}</p> --}}
+
+  {{-- @foreach($study_times_bars as $study_times_bar)
     <p>{{ $study_times_bar }}</p>
-  @endforeach
+    <p>{{ $study_times_bar->date }}</p>
+  @endforeach --}}
 
-  {{-- 一旦0で埋める --}}
-  {{-- @for ($i = 1; $i <= {{$piece_end_month[2]}}; $i++)
-   
-  @endfor --}}
-  <? print_r($colums); ?>
-  <p><?php $day; ?></p>
-  
-  @foreach($pieces as $piece)
-    <p>{{ $piece }}</p>
-  @endforeach
-  
+{{-- <script>
+  let study_array = {{$study_array_Json}}; //PHPからJavaScriptに多次元配列を受け渡す
+  console.log(study_array)
+</script> --}}
+ 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+/* 棒グラフ */
+google.charts.load('current', {
+  'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawBarChart);
 
+function drawBarChart() {
+
+  // Create the data table.
+  var barChartData = new google.visualization.DataTable();
+  let study_array = {{$study_array_Json}}; //PHPからJavaScriptに多次元配列を受け渡す
+  console.log(study_array)
+  barChartData.addColumn('number', 'day');
+  barChartData.addColumn('number', 'time');
+  barChartData.addRows(study_array);
+
+
+  // Set chart options
+  var barChartOptions = {
+    'width': '100%',
+    'height': '100%',
+    'legend': 'none',
+    'colors': ['#0f71bc'],
+    hAxis: {
+      textStyle: {
+        color: '#97b9d1'
+      }, //目盛りの色
+      ticks: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30], //目盛りを自分で設定
+      gridlines: { //count:0 ,//補助線消す
+        color: '#fff'
+      },
+    },
+    vAxis: {
+      format: '#h', //単位「ｈ」つける
+      gridlines: {
+        count: 0
+      }, //補助線消す
+      textStyle: {
+        color: '#97b9d1'
+      }, //目盛りの色
+      baselineColor: 'transparent',
+    },
+  };
+
+  // Instantiate and draw our chart, passing in some barChartOptions.
+  var barChart = new google.visualization.ColumnChart(document.getElementById('barChart__div'));
+  barChart.draw(barChartData, barChartOptions);
+}
+
+// onReSizeイベント
+window.onresize = function() {
+  drawBarChart();
+  // drawPieLanguageChart();
+  // drawPieContentsChart();
+}
+
+</script>
 </body>
 
 </html>
