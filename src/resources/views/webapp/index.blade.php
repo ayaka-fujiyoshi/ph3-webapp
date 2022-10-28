@@ -18,7 +18,8 @@
     <!-- ヘッダー -->
     <header class="header">
       <div class="inner header__inner">
-        <img class="posse__logo" src="https://posse.anti-pattern.co.jp/img/posseLogo.png" alt="posseLogo">
+        {{-- <img class="posse__logo" src="https://posse.anti-pattern.co.jp/img/posseLogo.png" alt="posseLogo"> --}}
+        <img class="posse__logo" src="{{asset('/posseLogo.png')}}" alt="posseLogo">
         <p class="header__date">4th week</p>
         <button class="header__sending__button"><a href="#modal">記録・投稿</a></button>
       </div>
@@ -316,6 +317,23 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="{{asset('/js/webapp.js')}}"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  <?php
+    // $study_date_hour_array_data = 
+    // echo {{$study_times_bars}};
+    
+    // $study_array_Json = json_encode($study_date_hour_array_data);  
+    //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
+  ?>
+  @foreach($study_times_bars as $study_times_bar)
+    <p>{{ $study_times_bar }}</p>
+  @endforeach
+  @foreach($pieces as $piece)
+    <p>{{ $piece }}</p>
+  @endforeach
+  
+
 </body>
 
 </html>
