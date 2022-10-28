@@ -305,9 +305,9 @@
     <footer class="footer">
       <div class="Arrow-Left"></div>
       <p>
-        <span><?php echo date('Y'); ?></span>
+        <span>{{$pieces[0]}}</span>
         年
-        <span><?php echo date('m'); ?></span>
+        <span>{{$pieces[1]}}</span>
         月
       </p>
       <div class="Arrow-Right"></div>
@@ -329,9 +329,9 @@
   @foreach($study_times_bars as $study_times_bar)
     <p>{{ $study_times_bar }}</p>
   @endforeach
-  @foreach($pieces as $piece)
+  {{-- @foreach($pieces as $piece)
     <p>{{ $piece }}</p>
-  @endforeach
+  @endforeach --}}
   
 
 </body>
