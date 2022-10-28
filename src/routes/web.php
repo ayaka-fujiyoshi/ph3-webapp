@@ -96,4 +96,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //webappのルート設定
+Route::get('webapp/auth', 'WebappController@getAuth');
+Route::post('webapp/auth', 'WebappController@postAuth');
+
 Route::get('webapp', 'WebappController@index');//top

@@ -354,7 +354,7 @@
       $l++; //$language_name_arrayが回るごとに$lを増やしていく
     }
     $languages_array_Json = json_encode($languages_name_per_array);
-    // print_r($languages_array_Json);
+   
 
     //円グラフ コンテンツ
     $contents_name_array = [];
@@ -375,12 +375,7 @@
       $l++; //$language_name_arrayが回るごとに$lを増やしていく
     }
     $contents_array_Json = json_encode($contents_name_per_array);
-    // print_r($contents_array_Json);
-    // print_r($languages_name_array);
-    // echo $study_times_years[0]['count_hour'];
-    // print_r($languages_hour_array);
   ?>
-  {{-- <p>{{ $piece_end_month[2] }}</p> --}}
 
 
 
