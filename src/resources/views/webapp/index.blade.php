@@ -321,6 +321,18 @@
   
   <?php
     $colum = [];
+   
+      foreach($study_times_bars as $study_times_bar){
+        for ($i=0; $i < 31; $i++) { 
+           if ($i == $study_times_bar->date) {
+             array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]);
+             // exit;
+           } else {
+             array_push($colum, [$i, 0]);
+             // exit;
+           }
+         }
+       }
     foreach($study_times_bars as $study_times_bar){
       array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]); 
     }
@@ -331,15 +343,8 @@
   ?>
   {{-- <p>{{ $piece_end_month[2] }}</p> --}}
 
-  {{-- @foreach($study_times_bars as $study_times_bar)
-    <p>{{ $study_times_bar }}</p>
-    <p>{{ $study_times_bar->date }}</p>
-  @endforeach --}}
 
-{{-- <script>
-  let study_array = {{$study_array_Json}}; //PHPからJavaScriptに多次元配列を受け渡す
-  console.log(study_array)
-</script> --}}
+
  
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
