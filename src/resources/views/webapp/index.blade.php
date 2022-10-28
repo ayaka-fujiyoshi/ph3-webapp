@@ -337,6 +337,7 @@
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
   ?>
   <p>{{ $piece_end_month[2] }}</p>
+  
   @foreach($study_times_bars as $study_times_bar)
     <p>{{ $study_times_bar }}</p>
   @endforeach

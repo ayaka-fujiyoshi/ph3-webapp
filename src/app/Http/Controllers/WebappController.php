@@ -29,27 +29,22 @@ class WebappController extends Controller
     $piece_end_month = Carbon::now()->endOfMonth()->toDateString(); //今月の始まり
     $pieces = explode("-", $piece_month);
     $piece_end_month = explode("-", $piece_end_month);
-    // array:3 [▼
-    //   0 => "2022"
-    //   1 => "10"
-    //   2 => "01"
-    // ]
+     
     // $study_times_bars = Study_time::where('study_date', '>=', Carbon::now()->startOfMonth()->toDateString())
-    // $study_times_bars = Study_time::where('study_date', '>=', Carbon::now()->startOfMonth()->toDateString())
-    //   ->whereDate('study_date', 14)
-    //   ->get();
-    $data = [[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]];
-    for ($i=0; $i < 31; $i++) { 
-      $study_times_bars = Study_time::where('study_date', '>=', Carbon::now()->startOfMonth()->toDateString())
-      ->whereDay('study_date', $i)
-      ->get();
-
-      // if ( = ) {
-      //   # code...
-      // }
-    }
+    // ->whereDay('study_date', $i)
+    // ->get();
+    $month = Carbon::now()->format('Y-m');
+    $start = $month.'-01';
+    $end = $month.'-31';
+    $study_times_bars = Study_time::where('study_date','>=',$start)
+              ->where('study_date','<=',$end)
+              ->selectRaw('DATE_FORMAT(study_date, "%d") AS date')
+              ->selectRaw('SUM(study_hour) AS total_hour')
+              ->groupBy('date')
+              ->get();
     
     // dd($study_times_bars);
+
     $study_languages = Study_language::get();
     $study_contents = Study_content::get();
     return view('webapp.index', compact('study_times_years', 'study_times_months', 'study_times_days', 'pieces', 'piece_end_month', 'study_times_bars', 'study_languages', 'study_contents'));
