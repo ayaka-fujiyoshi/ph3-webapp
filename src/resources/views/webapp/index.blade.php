@@ -320,18 +320,37 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
   <?php
-    // $study_date_hour_array_data = 
-    // echo {{$study_times_bars}};
+    $colums = [];
+    // foreach($study_times_bars as $study_times_bar){
+    //     if ($study_times_bar[2] == ) {   //NULLなら０を
+    //     array_push($study_times_array, 0);    //empty()…変数が存在しない場合、または値が空かnullがセットされている場合にtrueを返す
+    //   }else{                                  //値があればそれをintに変換して$study_times_arrayに入れる
+    //     array_push($study_times_array, (int)$colum_graph_date[0][0]);
+    //   }
+    // }
+    // $piece_end_month[2]
+   
+    
+    //+=で合っているデータ入れる
     
     // $study_array_Json = json_encode($study_date_hour_array_data);  
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
   ?>
+  <p>{{ $piece_end_month[2] }}</p>
   @foreach($study_times_bars as $study_times_bar)
     <p>{{ $study_times_bar }}</p>
   @endforeach
-  {{-- @foreach($pieces as $piece)
+
+  {{-- 一旦0で埋める --}}
+  {{-- @for ($i = 1; $i <= {{$piece_end_month[2]}}; $i++)
+   
+  @endfor --}}
+  <? print_r($colums); ?>
+  <p><?php $day; ?></p>
+  
+  @foreach($pieces as $piece)
     <p>{{ $piece }}</p>
-  @endforeach --}}
+  @endforeach
   
 
 </body>
