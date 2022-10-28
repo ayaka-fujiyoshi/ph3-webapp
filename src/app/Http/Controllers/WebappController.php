@@ -41,8 +41,23 @@ class WebappController extends Controller
               ->get();
     
     // 円グラフ
-    $study_languages = Study_language::get();
-    $study_contents = Study_content::get();
+    //言語
+    $study_languages = Study_time::where('study_date', '>=',  Carbon::now()->startOfYear()->toDateString())
+    ->join('study_languages', 'study_times.languages_id' , '=', 'study_languages.id')
+    ->selectRaw('SUM(study_hour) AS total_hour')
+    ->selectRaw('language_name')
+    ->selectRaw('language_color')
+    ->groupBy('language_name','language_color')
+    ->get();
+
+    //コンテンツ
+    $study_contents = Study_time::where('study_date', '>=',  Carbon::now()->startOfYear()->toDateString())
+    ->join('study_contents', 'study_times.contents_id' , '=', 'study_contents.id')
+    ->selectRaw('SUM(study_hour) AS total_hour')
+    ->selectRaw('contents_name')
+    ->selectRaw('contents_color')
+    ->groupBy('contents_name','contents_color')
+    ->get();
     return view('webapp.index', compact('study_times_years', 'study_times_months', 'study_times_days', 'pieces', 'piece_end_month', 'study_times_bars', 'study_languages', 'study_contents'));
   }
 }

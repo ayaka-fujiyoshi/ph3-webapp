@@ -132,52 +132,52 @@ $l = 0;
 <script>
 
 /* 棒グラフ */
-google.charts.load('current', {
-  'packages': ['corechart']
-});
-google.charts.setOnLoadCallback(drawBarChart);
+// google.charts.load('current', {
+//   'packages': ['corechart']
+// });
+// google.charts.setOnLoadCallback(drawBarChart);
 
-function drawBarChart() {
+// function drawBarChart() {
 
-  // Create the data table.
-  var barChartData = new google.visualization.DataTable();
-  let study_array = <?php echo $study_array_Json?>; //PHPからJavaScriptに多次元配列を受け渡す
-  console.log(study_array)
-  barChartData.addColumn('number', 'day');
-  barChartData.addColumn('number', 'time');
-  barChartData.addRows(study_array);
+//   // Create the data table.
+//   var barChartData = new google.visualization.DataTable();
+//   let study_array = <?php echo $study_array_Json?>; //PHPからJavaScriptに多次元配列を受け渡す
+//   console.log(study_array)
+//   barChartData.addColumn('number', 'day');
+//   barChartData.addColumn('number', 'time');
+//   barChartData.addRows(study_array);
 
-  // Set chart options
-  var barChartOptions = {
-    'width': '100%',
-    'height': '100%',
-    'legend': 'none',
-    'colors': ['#0f71bc'],
-    hAxis: {
-      textStyle: {
-        color: '#97b9d1'
-      }, //目盛りの色
-      ticks: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30], //目盛りを自分で設定
-      gridlines: { //count:0 ,//補助線消す
-        color: '#fff'
-      },
-    },
-    vAxis: {
-      format: '#h', //単位「ｈ」つける
-      gridlines: {
-        count: 0
-      }, //補助線消す
-      textStyle: {
-        color: '#97b9d1'
-      }, //目盛りの色
-      baselineColor: 'transparent',
-    },
-  };
+//   // Set chart options
+//   var barChartOptions = {
+//     'width': '100%',
+//     'height': '100%',
+//     'legend': 'none',
+//     'colors': ['#0f71bc'],
+//     hAxis: {
+//       textStyle: {
+//         color: '#97b9d1'
+//       }, //目盛りの色
+//       ticks: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30], //目盛りを自分で設定
+//       gridlines: { //count:0 ,//補助線消す
+//         color: '#fff'
+//       },
+//     },
+//     vAxis: {
+//       format: '#h', //単位「ｈ」つける
+//       gridlines: {
+//         count: 0
+//       }, //補助線消す
+//       textStyle: {
+//         color: '#97b9d1'
+//       }, //目盛りの色
+//       baselineColor: 'transparent',
+//     },
+//   };
 
-  // Instantiate and draw our chart, passing in some barChartOptions.
-  var barChart = new google.visualization.ColumnChart(document.getElementById('barChart__div'));
-  barChart.draw(barChartData, barChartOptions);
-}
+//   // Instantiate and draw our chart, passing in some barChartOptions.
+//   var barChart = new google.visualization.ColumnChart(document.getElementById('barChart__div'));
+//   barChart.draw(barChartData, barChartOptions);
+// }
 
 
 

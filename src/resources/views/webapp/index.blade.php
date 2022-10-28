@@ -34,8 +34,8 @@
             <ul class="main__study__number">
               <li class="main__study__item first__item">
                 <div class="main__study__item__title">Today</div>
-                @foreach($study_times_years as $study_times_year)
-                  <div class="main__study__item__number">{{$study_times_year->count_hour}}</div>
+                @foreach($study_times_days as $study_times_day)
+                  <div class="main__study__item__number">{{$study_times_day->count_hour}}</div>
                 @endforeach
                 <div class="main__study__item__unit">hour</div>
               </li>
@@ -48,8 +48,8 @@
               </li>
               <li class="main__study__item last__item">
                 <div class="main__study__item__title">Total</div>
-                @foreach($study_times_days as $study_times_day)
-                  <div class="main__study__item__number">{{$study_times_day->count_hour}}</div>
+                @foreach($study_times_years as $study_times_year)
+                  <div class="main__study__item__number">{{$study_times_year->count_hour}}</div>
                 @endforeach
                 <div class="main__study__item__unit">hour</div>
               </li>
@@ -320,24 +320,50 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
   <?php
+    //棒グラフ
     $colum = [];
-   
-      foreach($study_times_bars as $study_times_bar){
-        for ($i=0; $i < $piece_end_month[2]; $i++) {  //月の終わりの日付まで回す
-           if ($i == $study_times_bar->date) {  //もし日付があったら、
-             array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]);
-           } else {
-             array_push($colum, [$i, 0]);
-           }
-         }
-       }
     foreach($study_times_bars as $study_times_bar){
-      array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]); 
+     for ($i=0; $i < $piece_end_month[2]; $i++) {  //月の終わりの日付まで回す
+        if ($i == $study_times_bar->date) {  //もし日付があったら、
+          array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]);
+        } else {
+          array_push($colum, [$i, 0]);
+        }
+      }
     }
-    // print_r($colum);
     $study_array_Json = json_encode($colum);  
-    // print_r($study_array_Json);
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
+
+
+    //円グラフ
+    $languages_name_array = [];
+    $languages_hour_array = [];
+    $languages_color_array = [];
+    $languages_name_per_array = [];
+    $l = 0;
+    $cut = 1;//カットしたい文字数
+    foreach($study_languages as $study_language){
+      array_push($languages_name_array, $study_language['language_name']);
+      $languages_per = ($study_language['total_hour']/$study_times_years[0]['count_hour'])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
+      array_push($languages_hour_array, ($languages_per)); 
+      array_push($languages_color_array, $study_language['language_color']);
+      
+      // echo "<pre>";
+      // echo $study_language;
+      // echo "</pre>";
+      // echo $study_language['language_name'];
+    }
+    foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
+      // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
+      // $language_name_array = ;
+      array_push($languages_name_per_array, [$language_name_array, (int)$languages_hour_array[$l]]); 
+      $l++; //$language_name_arrayが回るごとに$lを増やしていく
+    }
+    $languages_array_Json = json_encode($languages_name_per_array);
+    print_r($languages_array_Json);
+    // print_r($languages_name_array);
+    // echo $study_times_years[0]['count_hour'];
+    // print_r($languages_hour_array);
   ?>
   {{-- <p>{{ $piece_end_month[2] }}</p> --}}
 
@@ -395,10 +421,70 @@ function drawBarChart() {
   barChart.draw(barChartData, barChartOptions);
 }
 
+
+/* 円グラフ */
+/* 学習言語 */
+google.charts.setOnLoadCallback(drawPieLanguageChart);
+function drawPieLanguageChart() {
+
+  // Create the data table.
+  var pieChartLeftData = new google.visualization.DataTable();
+  let languages_array = {!! $languages_array_Json !!}; //PHPからJavaScriptに多次元配列を受け渡す
+  pieChartLeftData.addColumn('string', 'Topping');
+  pieChartLeftData.addColumn('number', 'Slices');
+  pieChartLeftData.addRows(languages_array);
+
+  // Set chart options
+  var pieChartLeftOptions = {
+    'width': '100%',
+    'height': '100%',
+    'pieHole': 0.4,
+    legend: {
+      maxLines: 4,
+      position: 'none',
+    },
+    slices: {
+      0: {
+        color: '{{ $languages_color_array[0] }}'
+      },
+      1: {
+        color: '{{ $languages_color_array[1] }}'
+      },
+      2: {
+        color: '{{ $languages_color_array[2] }}'
+      },
+      3: {
+        color: '{{ $languages_color_array[3] }}'
+      },
+      4: {
+        color: '{{ $languages_color_array[4] }}'
+      },
+      5: {
+        color: '{{ $languages_color_array[5] }}'
+      },
+      6: {
+        color: '{{ $languages_color_array[6] }}'
+      },
+      
+    },
+    
+    chartArea: {
+      left: 40,
+      top: 15,
+      width: '100%',
+      height: '70%'
+    }
+  };
+
+  // Instantiate and draw our chart, passing in some pieChartLeftOptions.
+  var pieChartLeft = new google.visualization.PieChart(document.getElementById('pieChart__left'));
+  pieChartLeft.draw(pieChartLeftData, pieChartLeftOptions);
+}
+
 // onReSizeイベント
 window.onresize = function() {
   drawBarChart();
-  // drawPieLanguageChart();
+  drawPieLanguageChart();
   // drawPieContentsChart();
 }
 
