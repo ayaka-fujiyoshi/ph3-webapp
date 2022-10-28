@@ -41,86 +41,86 @@
 //                                                             //Json形式に変換するためには、PHPの関数を使用↓
 //                                                             // Json形式に変換した配列 = json_encode(変換したい配列) ]
 
-//円グラフ
-// 年別に集計
-$stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")');
-$results_year= $stmt->fetch();
+// //円グラフ
+// // 年別に集計
+// $stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")');
+// $results_year= $stmt->fetch();
 
-//学習言語 円グラフ
-//↓ WHERE DATE_FORMAT(study_date, "%Y")にしたので年別の円グラフができるようにした
-$stmt = $db->query('SELECT
-                          SUM(study_times.study_hour) AS study_hour,
-                          study_languages.language_name AS language_name,
-                          study_languages.language_color AS language_color
-                          FROM study_times
-                          INNER JOIN study_languages 
-                          ON  study_times.languages_id = study_languages.id
-                          WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")
-                          GROUP BY study_languages.language_name, study_languages.language_color
-                          ORDER BY study_hour DESC
-                          ');
-$results_languages = $stmt->fetchAll();
+// //学習言語 円グラフ
+// //↓ WHERE DATE_FORMAT(study_date, "%Y")にしたので年別の円グラフができるようにした
+// $stmt = $db->query('SELECT
+//                           SUM(study_times.study_hour) AS study_hour,
+//                           study_languages.language_name AS language_name,
+//                           study_languages.language_color AS language_color
+//                           FROM study_times
+//                           INNER JOIN study_languages 
+//                           ON  study_times.languages_id = study_languages.id
+//                           WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")
+//                           GROUP BY study_languages.language_name, study_languages.language_color
+//                           ORDER BY study_hour DESC
+//                           ');
+// $results_languages = $stmt->fetchAll();
 
-$languages_name_array = [];
-for ($k=0; $k < count($results_languages); $k++) {
-  array_push($languages_name_array, $results_languages[$k]['language_name']);
-}
-$languages_hour_array = [];
-for ($h=0; $h < count($results_languages); $h++) {
-  $languages_per = ($results_languages[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
-  array_push($languages_hour_array, ($languages_per));  
-}
-$languages_color_array = [];
-for ($c=0; $c < count($results_languages); $c++) {
-  $language_color = $results_languages[$c]['language_color'];
-  array_push($languages_color_array, $language_color);
-}
-$languages_name_per_array = [];
-$l = 0;
-  foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
-    $languages_name_per_before = array($language_name_array, $languages_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
-    array_push($languages_name_per_array, $languages_name_per_before); //空配列に↑の配列を代入する
-    $l++; //$language_name_arrayが回るごとに$lを増やしていく
-  }
-  $languages_array_Json = json_encode($languages_name_per_array);
+// $languages_name_array = [];
+// for ($k=0; $k < count($results_languages); $k++) {
+//   array_push($languages_name_array, $results_languages[$k]['language_name']);
+// }
+// $languages_hour_array = [];
+// for ($h=0; $h < count($results_languages); $h++) {
+//   $languages_per = ($results_languages[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
+//   array_push($languages_hour_array, ($languages_per));  
+// }
+// $languages_color_array = [];
+// for ($c=0; $c < count($results_languages); $c++) {
+//   $language_color = $results_languages[$c]['language_color'];
+//   array_push($languages_color_array, $language_color);
+// }
+// $languages_name_per_array = [];
+// $l = 0;
+//   foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
+//     $languages_name_per_before = array($language_name_array, $languages_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
+//     array_push($languages_name_per_array, $languages_name_per_before); //空配列に↑の配列を代入する
+//     $l++; //$language_name_arrayが回るごとに$lを増やしていく
+//   }
+//   $languages_array_Json = json_encode($languages_name_per_array);
 
 
 
 // //学習コンテンツ 円グラフ
-// $stmt = $db->query('SELECT
-//                           SUM(study_times.study_hour) AS study_hour,
-//                           study_contents.contents_name AS contents_name,
-//                           study_contents.contents_color AS contents_color
-//                           FROM study_times
-//                           INNER JOIN study_contents 
-//                           ON  study_times.contents_id = study_contents.id
-//                           WHERE DATE_FORMAT(study_date, "%Y-%m") = DATE_FORMAT(now(), "%Y-%m")
-//                           GROUP BY study_contents.contents_name, study_contents.contents_color
-//                           ORDER BY study_hour DESC
-//                           ');
-// $results_contents = $stmt->fetchAll();
-// $contents_name_array = [];
-// for ($k=0; $k < count($results_contents); $k++) {
-//   array_push($contents_name_array, $results_contents[$k]['contents_name']);
-// }
-// $contents_hour_array = [];
-// for ($h=0; $h < count($results_contents); $h++) {
-//   $contents_per = ($results_contents[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
-//   array_push($contents_hour_array, ($contents_per));  
-// }
-// $contents_color_array = [];
-// for ($c=0; $c < count($results_contents); $c++) {
-//   $contents_color = $results_contents[$c]['contents_color'];
-//   array_push($contents_color_array, $contents_color);
-// }
-// $contents_name_per_array = [];
-// $l = 0;
-//   foreach ($contents_name_array as $contents_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
-//     $contents_name_per_before = array($contents_name_array, $contents_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
-//     array_push($contents_name_per_array, $contents_name_per_before); //空配列に↑の配列を代入する
-//     $l++; //$language_name_arrayが回るごとに$lを増やしていく
-//   }
-//   $contents_array_Json = json_encode($contents_name_per_array);
+$stmt = $db->query('SELECT
+                          SUM(study_times.study_hour) AS study_hour,
+                          study_contents.contents_name AS contents_name,
+                          study_contents.contents_color AS contents_color
+                          FROM study_times
+                          INNER JOIN study_contents 
+                          ON  study_times.contents_id = study_contents.id
+                          WHERE DATE_FORMAT(study_date, "%Y-%m") = DATE_FORMAT(now(), "%Y-%m")
+                          GROUP BY study_contents.contents_name, study_contents.contents_color
+                          ORDER BY study_hour DESC
+                          ');
+$results_contents = $stmt->fetchAll();
+$contents_name_array = [];
+for ($k=0; $k < count($results_contents); $k++) {
+  array_push($contents_name_array, $results_contents[$k]['contents_name']);
+}
+$contents_hour_array = [];
+for ($h=0; $h < count($results_contents); $h++) {
+  $contents_per = ($results_contents[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
+  array_push($contents_hour_array, ($contents_per));  
+}
+$contents_color_array = [];
+for ($c=0; $c < count($results_contents); $c++) {
+  $contents_color = $results_contents[$c]['contents_color'];
+  array_push($contents_color_array, $contents_color);
+}
+$contents_name_per_array = [];
+$l = 0;
+  foreach ($contents_name_array as $contents_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
+    $contents_name_per_before = array($contents_name_array, $contents_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
+    array_push($contents_name_per_array, $contents_name_per_before); //空配列に↑の配列を代入する
+    $l++; //$language_name_arrayが回るごとに$lを増やしていく
+  }
+  $contents_array_Json = json_encode($contents_name_per_array);
 
 ?>
 

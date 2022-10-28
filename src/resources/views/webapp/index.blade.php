@@ -335,7 +335,7 @@
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
 
 
-    //円グラフ
+    //円グラフ 言語
     $languages_name_array = [];
     $languages_hour_array = [];
     $languages_color_array = [];
@@ -347,20 +347,35 @@
       $languages_per = ($study_language['total_hour']/$study_times_years[0]['count_hour'])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
       array_push($languages_hour_array, ($languages_per)); 
       array_push($languages_color_array, $study_language['language_color']);
-      
-      // echo "<pre>";
-      // echo $study_language;
-      // echo "</pre>";
-      // echo $study_language['language_name'];
     }
     foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
       // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
-      // $language_name_array = ;
       array_push($languages_name_per_array, [$language_name_array, (int)$languages_hour_array[$l]]); 
       $l++; //$language_name_arrayが回るごとに$lを増やしていく
     }
     $languages_array_Json = json_encode($languages_name_per_array);
-    print_r($languages_array_Json);
+    // print_r($languages_array_Json);
+
+    //円グラフ コンテンツ
+    $contents_name_array = [];
+    $contents_hour_array = [];
+    $contents_color_array = [];
+    $contents_name_per_array = [];
+    $l = 0;
+    $cut = 1;//カットしたい文字数
+    foreach($study_contents as $study_contents){
+      array_push($contents_name_array, $study_contents['contents_name']);
+      $contents_per = ($study_contents['total_hour']/$study_times_years[0]['count_hour'])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
+      array_push($contents_hour_array, ($contents_per)); 
+      array_push($contents_color_array, $study_contents['contents_color']);
+    }
+    foreach ($contents_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
+      // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
+      array_push($contents_name_per_array, [$language_name_array, (int)$contents_hour_array[$l]]); 
+      $l++; //$language_name_arrayが回るごとに$lを増やしていく
+    }
+    $contents_array_Json = json_encode($contents_name_per_array);
+    // print_r($contents_array_Json);
     // print_r($languages_name_array);
     // echo $study_times_years[0]['count_hour'];
     // print_r($languages_hour_array);
@@ -481,11 +496,57 @@ function drawPieLanguageChart() {
   pieChartLeft.draw(pieChartLeftData, pieChartLeftOptions);
 }
 
+
+/* 学習コンテンツ */
+google.charts.setOnLoadCallback(drawPieContentsChart);
+function drawPieContentsChart() {
+
+  // Create the data table.
+  var pieChartRightData = new google.visualization.DataTable();
+  let contents_array = {!! $contents_array_Json !!}; //PHPからJavaScriptに多次元配列を受け渡す
+  pieChartRightData.addColumn('string', 'Topping');
+  pieChartRightData.addColumn('number', 'Slices');
+  pieChartRightData.addRows(contents_array);
+
+  // Set chart options
+  var pieChartRightOptions = {
+    'width': '100%',
+    'height': '100%',
+    'pieHole': 0.4,
+    legend: {
+      maxLines: 4,
+      position: 'none',
+    },
+    slices: {
+      0: {
+        color: '{{ $contents_color_array[0] }}'
+      },
+      1: {
+        color: '{{ $contents_color_array[1] }}'
+      },
+      2: {
+        color: '{{ $contents_color_array[2] }}'
+      },
+    },
+    chartArea: {
+      left: 40,
+      top: 15,
+      width: '100%',
+      height: '70%'
+    },
+  };
+
+  // Instantiate and draw our chart, passing in some pieChartRightOptions.
+  var pieChartRight = new google.visualization.PieChart(document.getElementById('pieChart__right'));
+  pieChartRight.draw(pieChartRightData, pieChartRightOptions);
+}
+
+
 // onReSizeイベント
 window.onresize = function() {
   drawBarChart();
   drawPieLanguageChart();
-  // drawPieContentsChart();
+  drawPieContentsChart();
 }
 
 </script>
