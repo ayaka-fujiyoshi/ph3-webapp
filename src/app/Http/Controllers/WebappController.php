@@ -25,14 +25,11 @@ class WebappController extends Controller
       ->selectRaw('COUNT(study_hour) as count_hour')
       ->get();
 
+    // 縦棒グラフ
     $piece_month = Carbon::now()->startOfMonth()->toDateString(); //今月の始まり
     $piece_end_month = Carbon::now()->endOfMonth()->toDateString(); //今月の始まり
     $pieces = explode("-", $piece_month);
     $piece_end_month = explode("-", $piece_end_month);
-     
-    // $study_times_bars = Study_time::where('study_date', '>=', Carbon::now()->startOfMonth()->toDateString())
-    // ->whereDay('study_date', $i)
-    // ->get();
     $month = Carbon::now()->format('Y-m');
     $start = $month.'-01';
     $end = $month.'-31';
@@ -43,8 +40,7 @@ class WebappController extends Controller
               ->groupBy('date')
               ->get();
     
-    // dd($study_times_bars);
-
+    // 円グラフ
     $study_languages = Study_language::get();
     $study_contents = Study_content::get();
     return view('webapp.index', compact('study_times_years', 'study_times_months', 'study_times_days', 'pieces', 'piece_end_month', 'study_times_bars', 'study_languages', 'study_contents'));

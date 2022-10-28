@@ -323,20 +323,18 @@
     $colum = [];
    
       foreach($study_times_bars as $study_times_bar){
-        for ($i=0; $i < 31; $i++) { 
-           if ($i == $study_times_bar->date) {
+        for ($i=0; $i < $piece_end_month[2]; $i++) {  //月の終わりの日付まで回す
+           if ($i == $study_times_bar->date) {  //もし日付があったら、
              array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]);
-             // exit;
            } else {
              array_push($colum, [$i, 0]);
-             // exit;
            }
          }
        }
     foreach($study_times_bars as $study_times_bar){
       array_push($colum, [ (int)$study_times_bar->date , (int)$study_times_bar->total_hour ]); 
     }
-    print_r($colum);
+    // print_r($colum);
     $study_array_Json = json_encode($colum);  
     // print_r($study_array_Json);
     //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
@@ -359,7 +357,7 @@ function drawBarChart() {
   // Create the data table.
   var barChartData = new google.visualization.DataTable();
   let study_array = {{$study_array_Json}}; //PHPからJavaScriptに多次元配列を受け渡す
-  console.log(study_array)
+  // console.log(study_array)
   barChartData.addColumn('number', 'day');
   barChartData.addColumn('number', 'time');
   barChartData.addRows(study_array);

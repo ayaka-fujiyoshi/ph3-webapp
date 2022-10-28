@@ -1,88 +1,88 @@
 <?php
 
-// 学習時間 棒グラフ
-  // 月別に集計
-  $stmt = $db->query('SELECT DATE_FORMAT(`study_date`, "%Y-%m") as `grouping_month`, SUM(study_hour) FROM `study_times` GROUP BY `grouping_month`');
-  $results_month_group = $stmt->fetchAll();
-  for ($i=0; $i <count($results_month_group); $i++) {  //count($results_month_group)でfor文を要素数までで終わらせる
-    $pieces = explode("-", $results_month_group[$i]['grouping_month']);   //$iが最新の月まで回って終わるから、必ずpiecesは最新の月になる
-  }
-  $piece_year = $pieces[0];     //年を表示
-  $piece_month = $pieces[1];    //月を表示
-  
-  //下記は後に使う空配列、ここで定義しておく
-  $study_times_array = array();
-  $study_date_hour_array = array();
-  
-  for ($i = 1; $i <= date('t', strtotime(`$piece_year-$piece_month`)); $i++) {     // date('t', strtotime(`$piece_year-$piece_month`)); で月の日数分がとれる
-    if(preg_match('/^([0-9]{1})$/', $i)){  //もし$iが１桁だったら
-      $i = '0'.$i;                         //ゼロ埋めするように'0'を.で
-    }                                      //それ以外はそのまま
-    $date = "$piece_year-$piece_month-$i";  //上で抽出した年月とiで表した日で日付を表す
-    $stmt = $db->prepare('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y-%m-%d") = ?');
-    $stmt->bindValue(1,$date);  //
-    $stmt->execute();
-    $colum_graph_date = $stmt->fetchAll();
-  
-    if (empty($colum_graph_date[0][0])) {   //NULLなら０を
-      array_push($study_times_array, 0);    //empty()…変数が存在しない場合、または値が空かnullがセットされている場合にtrueを返す
-    }else{                                  //値があればそれをintに変換して$study_times_arrayに入れる
-      array_push($study_times_array, (int)$colum_graph_date[0][0]);
-    }
-  }
-  //このままだと学習時間だけが並んでいる配列、日にちとセットの配列がほしい
-  $d = 1;
-  foreach ($study_times_array as $study_time_array) {  //１つ１つの学習時間に対して、日にち($d)をセットにし、array_pushで予め用意していた空配列に足していく
-    $study_date_hour_array_before = array($d, $study_time_array);   // [日にち, 学習時間]の配列を定義、ここでデータを入れる
-    array_push($study_date_hour_array, $study_date_hour_array_before); //空配列に↑の配列を代入する
-    $d++; //$study_time_arrayが回るごとに$dを増やしていく
-  }
-  $study_array_Json = json_encode($study_date_hour_array);  //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
-                                                            //Json形式に変換するためには、PHPの関数を使用↓
-                                                            // Json形式に変換した配列 = json_encode(変換したい配列) ]
-
-// //円グラフ
-// // 年別に集計
-// $stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")');
-// $results_year= $stmt->fetch();
-
-// //学習言語 円グラフ
-// //↓ WHERE DATE_FORMAT(study_date, "%Y")にしたので年別の円グラフができるようにした
-// $stmt = $db->query('SELECT
-//                           SUM(study_times.study_hour) AS study_hour,
-//                           study_languages.language_name AS language_name,
-//                           study_languages.language_color AS language_color
-//                           FROM study_times
-//                           INNER JOIN study_languages 
-//                           ON  study_times.languages_id = study_languages.id
-//                           WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")
-//                           GROUP BY study_languages.language_name, study_languages.language_color
-//                           ORDER BY study_hour DESC
-//                           ');
-// $results_languages = $stmt->fetchAll();
-
-// $languages_name_array = [];
-// for ($k=0; $k < count($results_languages); $k++) {
-//   array_push($languages_name_array, $results_languages[$k]['language_name']);
-// }
-// $languages_hour_array = [];
-// for ($h=0; $h < count($results_languages); $h++) {
-//   $languages_per = ($results_languages[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
-//   array_push($languages_hour_array, ($languages_per));  
-// }
-// $languages_color_array = [];
-// for ($c=0; $c < count($results_languages); $c++) {
-//   $language_color = $results_languages[$c]['language_color'];
-//   array_push($languages_color_array, $language_color);
-// }
-// $languages_name_per_array = [];
-// $l = 0;
-//   foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
-//     $languages_name_per_before = array($language_name_array, $languages_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
-//     array_push($languages_name_per_array, $languages_name_per_before); //空配列に↑の配列を代入する
-//     $l++; //$language_name_arrayが回るごとに$lを増やしていく
+// // 学習時間 棒グラフ
+//   // 月別に集計
+//   $stmt = $db->query('SELECT DATE_FORMAT(`study_date`, "%Y-%m") as `grouping_month`, SUM(study_hour) FROM `study_times` GROUP BY `grouping_month`');
+//   $results_month_group = $stmt->fetchAll();
+//   for ($i=0; $i <count($results_month_group); $i++) {  //count($results_month_group)でfor文を要素数までで終わらせる
+//     $pieces = explode("-", $results_month_group[$i]['grouping_month']);   //$iが最新の月まで回って終わるから、必ずpiecesは最新の月になる
 //   }
-//   $languages_array_Json = json_encode($languages_name_per_array);
+//   $piece_year = $pieces[0];     //年を表示
+//   $piece_month = $pieces[1];    //月を表示
+  
+//   //下記は後に使う空配列、ここで定義しておく
+//   $study_times_array = array();
+//   $study_date_hour_array = array();
+  
+//   for ($i = 1; $i <= date('t', strtotime(`$piece_year-$piece_month`)); $i++) {     // date('t', strtotime(`$piece_year-$piece_month`)); で月の日数分がとれる
+//     if(preg_match('/^([0-9]{1})$/', $i)){  //もし$iが１桁だったら
+//       $i = '0'.$i;                         //ゼロ埋めするように'0'を.で
+//     }                                      //それ以外はそのまま
+//     $date = "$piece_year-$piece_month-$i";  //上で抽出した年月とiで表した日で日付を表す
+//     $stmt = $db->prepare('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y-%m-%d") = ?');
+//     $stmt->bindValue(1,$date);  //
+//     $stmt->execute();
+//     $colum_graph_date = $stmt->fetchAll();
+  
+//     if (empty($colum_graph_date[0][0])) {   //NULLなら０を
+//       array_push($study_times_array, 0);    //empty()…変数が存在しない場合、または値が空かnullがセットされている場合にtrueを返す
+//     }else{                                  //値があればそれをintに変換して$study_times_arrayに入れる
+//       array_push($study_times_array, (int)$colum_graph_date[0][0]);
+//     }
+//   }
+//   //このままだと学習時間だけが並んでいる配列、日にちとセットの配列がほしい
+//   $d = 1;
+//   foreach ($study_times_array as $study_time_array) {  //１つ１つの学習時間に対して、日にち($d)をセットにし、array_pushで予め用意していた空配列に足していく
+//     $study_date_hour_array_before = array($d, $study_time_array);   // [日にち, 学習時間]の配列を定義、ここでデータを入れる
+//     array_push($study_date_hour_array, $study_date_hour_array_before); //空配列に↑の配列を代入する
+//     $d++; //$study_time_arrayが回るごとに$dを増やしていく
+//   }
+//   $study_array_Json = json_encode($study_date_hour_array);  //JavaScriptにPHPの配列を渡すためには、一度配列をJson形式に配列を変換する必要がある
+//                                                             //Json形式に変換するためには、PHPの関数を使用↓
+//                                                             // Json形式に変換した配列 = json_encode(変換したい配列) ]
+
+//円グラフ
+// 年別に集計
+$stmt = $db->query('SELECT SUM(study_hour) FROM study_times WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")');
+$results_year= $stmt->fetch();
+
+//学習言語 円グラフ
+//↓ WHERE DATE_FORMAT(study_date, "%Y")にしたので年別の円グラフができるようにした
+$stmt = $db->query('SELECT
+                          SUM(study_times.study_hour) AS study_hour,
+                          study_languages.language_name AS language_name,
+                          study_languages.language_color AS language_color
+                          FROM study_times
+                          INNER JOIN study_languages 
+                          ON  study_times.languages_id = study_languages.id
+                          WHERE DATE_FORMAT(study_date, "%Y") = DATE_FORMAT(now(), "%Y")
+                          GROUP BY study_languages.language_name, study_languages.language_color
+                          ORDER BY study_hour DESC
+                          ');
+$results_languages = $stmt->fetchAll();
+
+$languages_name_array = [];
+for ($k=0; $k < count($results_languages); $k++) {
+  array_push($languages_name_array, $results_languages[$k]['language_name']);
+}
+$languages_hour_array = [];
+for ($h=0; $h < count($results_languages); $h++) {
+  $languages_per = ($results_languages[$h]['study_hour']/$results_year[0])*100; // (学習時間 / 年間合計学習時間)*100にして扇形の配分出す
+  array_push($languages_hour_array, ($languages_per));  
+}
+$languages_color_array = [];
+for ($c=0; $c < count($results_languages); $c++) {
+  $language_color = $results_languages[$c]['language_color'];
+  array_push($languages_color_array, $language_color);
+}
+$languages_name_per_array = [];
+$l = 0;
+  foreach ($languages_name_array as $language_name_array) {  //１つ１つの学習言語に対して、学習時間($lで判別)をセットにし、array_pushで予め用意していた空配列に足していく
+    $languages_name_per_before = array($language_name_array, $languages_hour_array[$l]);   // [学習言語, 学習時間]の配列を定義、ここでデータを入れる
+    array_push($languages_name_per_array, $languages_name_per_before); //空配列に↑の配列を代入する
+    $l++; //$language_name_arrayが回るごとに$lを増やしていく
+  }
+  $languages_array_Json = json_encode($languages_name_per_array);
 
 
 
