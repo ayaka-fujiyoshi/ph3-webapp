@@ -145,22 +145,7 @@
       </div>
     </main>
 
-    <?php
-      if(isset($study_date_post)){
-        print_r($study_date_post)."<br>";
-      } else {
-        echo "date 不成功"."<br>";
-      }
-      if(isset($study_content_post)){
-        print_r($study_content_post)."<br>";
-      }
-      if(isset($study_language_post)){
-        print_r($study_language_post)."<br>";
-      }
-      if(isset($study_hour_post)){
-        print_r($study_hour_post)."<br>";
-      }
-    ?>
+    
 
     <!-- モーダル画面 -->
     <div class="modal-wrapper" id="modal">
